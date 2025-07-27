@@ -1,13 +1,36 @@
-import { useState } from "react";
-
+import { useState, useRef } from "react";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../Firebase/Firebase"
 import Header from "../Header/Header";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [signUp, setSignUp] = useState(false);
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+  const navigate = useNavigate();
 
-  const handelSubmit = (e) => {
+
+  const handelSubmit = async (e) => {
     e.preventDefault();
-    // setSignUp(false);
+    
+    try{
+      if(signUp) {
+      await  createUserWithEmailAndPassword(auth, email.current.value, password.current.value);
+        alert("Registration Successful!");
+        navigate("/")
+      } else{
+        await signInWithEmailAndPassword(auth, email.current.value, password.current.value);
+        alert("Login Successful!");
+        navigate("/browse");
+      }
+    }
+    catch(error){
+      alert("Login Failed! " + error.message);
+      console.error("Login Error:", error);
+    }
+    
   };
   return (
     <div className="relative w-screen h-screen">
@@ -36,6 +59,7 @@ const Login = () => {
 
           {signUp && (
             <input
+            ref={name}
               type="text"
               placeholder="Name"
               className="w-full p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
@@ -44,6 +68,7 @@ const Login = () => {
           )}
 
           <input
+          ref={email}
             type="text"
             placeholder="Email or mobile number"
             className="w-full p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
@@ -51,6 +76,7 @@ const Login = () => {
           />
 
           <input
+          ref={password}
             type="password"
             placeholder="Password"
             className="w-full p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
