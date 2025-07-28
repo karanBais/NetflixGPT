@@ -18,11 +18,11 @@ const Login = () => {
     try{
       if(signUp) {
       await  createUserWithEmailAndPassword(auth, email.current.value, password.current.value);
-        alert("Registration Successful!");
+        // alert("Registration Successful!");
         navigate("/")
       } else{
         await signInWithEmailAndPassword(auth, email.current.value, password.current.value);
-        alert("Login Successful!");
+        // alert("Login Successful!");
         navigate("/browse");
       }
     }
