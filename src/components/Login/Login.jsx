@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "fire
 import {auth} from "../Firebase/Firebase"
 import Header from "../Header/Header";
 import { useNavigate } from "react-router-dom";
+import { NETFLIX_BACKGROUND } from "../../Constants";
 
 const Login = () => {
   const [signUp, setSignUp] = useState(false);
@@ -19,11 +20,11 @@ const Login = () => {
       if(signUp) {
       await  createUserWithEmailAndPassword(auth, email.current.value, password.current.value);
         // alert("Registration Successful!");
-        navigate("/")
+        // navigate("/")
       } else{
         await signInWithEmailAndPassword(auth, email.current.value, password.current.value);
         // alert("Login Successful!");
-        navigate("/browse");
+        // navigate("/browse");
       }
     }
     catch(error){
@@ -38,7 +39,7 @@ const Login = () => {
       <div className="absolute inset-0">
         <img
           className="w-full h-full object-cover"
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/258d0f77-2241-4282-b613-8354a7675d1a/web/IN-en-20250721-TRIFECTA-perspective_cadc8408-df6e-4313-a05d-daa9dcac139f_large.jpg"
+          src={NETFLIX_BACKGROUND}
           alt="background"
         />
         <div className="absolute inset-0 bg-black opacity-60"></div>
