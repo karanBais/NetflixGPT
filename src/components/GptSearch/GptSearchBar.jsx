@@ -1,41 +1,60 @@
 import React, { useRef } from "react";
-import openai from "./openAi";
+import run from "./Gemini";
+import { MOVIE_API_OPTION } from "../../Constants";
+import { useDispatch } from "react-redux";
+import { setGptMovies } from "../Redux/GptSlice";
 
 const GptSearchBar = () => {
   const searchText = useRef(null);
+  const dispatch = useDispatch();
 
-  const handleGptSearch = async () => {
-    console.log(searchText.current.value);
+  const fetchMovieFromTMDB = async (movieName) => {
+    const url = `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
+      movieName
+    )}&include_adult=false&language=en-US&page=1`;
 
-    const gptQuery =
-      "Act as a Movie Recommendation system and suggest some movies for the quary" +
-      searchText.current.value +
-      " only give me 10 movies. comma seperated. ";
-
-    const gptResult = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [{ role: "developer", content: gptQuery }],
-    });
-    console.log(gptResult.choices);
+    const response = await fetch(url, MOVIE_API_OPTION);
+    const data = await response.json();
+    return data.results?.[0];
   };
 
-  return (
-    <div className="fixed bottom-0 left-0 w-full bg-black py-4 px-4 z-50">
+  const handleGptSearch = async () => {
+    const query = searchText.current.value.trim();
+    if (!query) return;
+
+    const gptQuery = `Act as a Movie Recommendation system and suggest 10 movies for: ${query}. Return only names, comma-separated.`;
+
+    try {
+      const gptResponse = await run(gptQuery);
+      const movieNames = gptResponse.split(",").map((name) => name.trim());
+
+      const movieDetails = await Promise.all(
+        movieNames.map((name) => fetchMovieFromTMDB(name))
+      );
+
+      const filteredMovies = movieDetails.filter(Boolean);
+      dispatch(setGptMovies(filteredMovies));
+    } catch (error) {
+      console.error("Error fetching GPT movies:", error);
+    }
+  };
+
+   return (
+    <div className="pt-[10%] md:pt-[5%] flex justify-center">
       <form
+        className="w-full md:w-1/2 bg-black grid grid-cols-12 rounded-lg overflow-hidden"
         onSubmit={(e) => e.preventDefault()}
-        className="flex w-full max-w-3xl mx-auto bg-[#141414] rounded-full overflow-hidden shadow-lg"
       >
         <input
-          type="text"
           ref={searchText}
-          // onChange={(e) => setSearchText(e.target.value)}
-          placeholder="Search movies with GPT..."
-          className="flex-grow px-6 py-3 bg-[#141414] text-white placeholder-gray-400 outline-none"
+          type="text"
+          placeholder="What do you want to watch today?"
+          className="col-span-9 px-4 py-3 text-lg outline-none bg-gray-800 text-white"
         />
         <button
-          type="submit"
-          onClick={() => handleGptSearch()}
-          className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold transition-colors duration-200"
+          type="button"
+          onClick={handleGptSearch}
+          className="col-span-3 bg-red-600 hover:bg-red-700 text-white font-semibold"
         >
           Search
         </button>

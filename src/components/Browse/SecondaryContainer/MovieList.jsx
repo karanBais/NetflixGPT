@@ -31,10 +31,10 @@ const MovieList = ({ title, movies }) => {
         {/* Movie Scroll Container */}
         <div
           ref={scrollRef}
-          className="flex overflow-x-auto scrollbar-hide scroll-smooth gap-4"
+          className="flex overflow-x-auto scrollbar-hide scroll-smooth gap-4 "
         >
           {movies.map((movie) => (
-            <MovieCard key={movie.id} posterPath={movie.poster_path} />
+            <MovieCard  key={movie.id} posterPath={movie.poster_path} />
           ))}
         </div>
 
