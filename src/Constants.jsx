@@ -11,3 +11,5 @@ export const MOVIE_API_OPTION ={
 };
 
 export const IMG_API_URL = "https://image.tmdb.org/t/p/w300";
+
+export const OPEN_AI_API = "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"
