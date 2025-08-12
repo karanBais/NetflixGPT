@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { IMG_API_URL, MOVIE_API_OPTION } from "../../../Constants";
+import YouTube from "react-youtube";
 
 const VideoBackground = ({ movieId }) => {
   const movieDetails = useSelector((store) =>
@@ -42,16 +43,36 @@ const VideoBackground = ({ movieId }) => {
     }
   }, [movieId]);
 
+  const opts = {
+    playerVars: {
+      autoplay: 1,
+      controls: 0,
+      mute: 1,
+      loop: 1,
+      playlist: videoKey, // Required for loop to work
+      modestbranding: 1,
+      rel: 0,
+      showinfo: 0,
+      iv_load_policy: 3,
+      playsinline: 1, // Helps with mobile/iOS autoplay
+    },
+  };
+
+  const onReady = (event) => {
+    event.target.mute(); // Ensure muted
+    event.target.playVideo(); // Explicitly play
+  };
+
   return (
     <div className="absolute top-0 left-0 w-full h-screen overflow-hidden z-0">
       {videoKey ? (
-        <iframe
-          src={`https://www.youtube.com/embed/${videoKey}?autoplay=1&mute=1&loop=1&playlist=${videoKey}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`}
-          frameBorder="0"
-          allow="autoplay; encrypted-media; fullscreen"
-          allowFullScreen
-          className="w-screen h-screen aspect-video object-cover pointer-events-none scale-125" // Added scale-125 to ensure it fills the screen without letterboxing
-        ></iframe>
+        <YouTube
+          videoId={videoKey}
+          opts={opts}
+          onReady={onReady}
+          className="w-screen h-screen aspect-video object-cover pointer-events-none"
+          iframeClassName="w-full h-full" // Ensures iframe fills the container
+        />
       ) : backdropUrl ? (
         <img
           src={backdropUrl}
