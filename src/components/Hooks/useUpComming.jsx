@@ -8,7 +8,7 @@ const useUpComming = () => {
   
    const getUpCommingMovies = async () => {
         try{
-          const res = await fetch(`/api/tmdb?path=movie/upcomming`);
+          const res = await fetch(`/api/tmdb?path=movie/upcoming`);
         const json = await res.json();
         console.log(json.results);
         dispatch(addUpCommingMovies(json.results));
