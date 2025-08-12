@@ -14,7 +14,7 @@ const useNowPlayingMovies = () => {
         dispatch(addNowPlayingMovies(json.results));
       }
       catch{
-         console.error("Error fetching now playing movies:", error);
+         console.log("Error fetching now playing movies:");
       }
       }
       

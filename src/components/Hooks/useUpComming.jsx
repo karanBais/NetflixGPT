@@ -14,7 +14,7 @@ const useUpComming = () => {
         dispatch(addUpCommingMovies(json.results));
       }
       catch{
-         console.error("Error fetching up comming movies:", error);
+         console.log("Error fetching up comming movies:");
       }
       }
       

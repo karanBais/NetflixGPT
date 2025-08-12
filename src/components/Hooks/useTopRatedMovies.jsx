@@ -14,7 +14,7 @@ const useTopRatedMovies = () => {
         dispatch(addTopRatedMovies(json.results));
       }
       catch{
-         console.error("Error fetching top rated movies:", error);
+         console.log("Error fetching top rated movies:");
       }
       }
       
