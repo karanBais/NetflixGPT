@@ -7,10 +7,15 @@ const useTopRatedMovies = () => {
     const dispatch = useDispatch()
   
    const getTopRatedMovies = async () => {
-        const data = await fetch('https://api.themoviedb.org/3/movie/top_rated?&page=1', MOVIE_API_OPTION)
-        const json = await data.json();
+       try{
+        const res = await fetch(`/api/tmdb?path=movie/top_rated`);
+        const json = await res.json();
         console.log(json.results);
         dispatch(addTopRatedMovies(json.results));
+       }
+       catch{
+         console.error("Error fetching now playing movies:", error);
+       }
       }
       
       useEffect(() => {

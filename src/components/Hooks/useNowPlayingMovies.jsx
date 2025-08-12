@@ -7,10 +7,15 @@ const useNowPlayingMovies = () => {
     const dispatch = useDispatch()
   
    const getNowPlayingMovies = async () => {
-        const data = await fetch('https://api.themoviedb.org/3/movie/now_playing?&page=1', MOVIE_API_OPTION)
-        const json = await data.json();
+      try{
+          const res = await fetch(`/api/tmdb?path=movie/now_playing`);
+        const json = await res.json();
         console.log(json.results);
         dispatch(addNowPlayingMovies(json.results));
+      }
+      catch{
+         console.error("Error fetching now playing movies:", error);
+      }
       }
       
       useEffect(() => {
