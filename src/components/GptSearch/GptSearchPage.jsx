@@ -19,3 +19,5 @@ const GptSearchPage = () => {
     </div>
   );
 };
+
+export default GptSearchPage;
