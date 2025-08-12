@@ -11,7 +11,7 @@ const useTopRatedMovies = () => {
           const res = await fetch(`/api/tmdb?path=movie/top_rated`);
         const json = await res.json();
         console.log(json.results);
-        dispatch(addNowPlayingMovies(json.results));
+        dispatch(addTopRatedMovies(json.results));
       }
       catch{
          console.error("Error fetching top rated movies:", error);

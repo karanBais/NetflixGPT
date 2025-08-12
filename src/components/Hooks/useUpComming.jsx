@@ -11,7 +11,7 @@ const useUpComming = () => {
           const res = await fetch(`/api/tmdb?path=movie/upcomming`);
         const json = await res.json();
         console.log(json.results);
-        dispatch(addNowPlayingMovies(json.results));
+        dispatch(addUpCommingMovies(json.results));
       }
       catch{
          console.error("Error fetching up comming movies:", error);

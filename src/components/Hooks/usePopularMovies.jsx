@@ -11,7 +11,7 @@ const usePopularMovies = () => {
           const res = await fetch(`/api/tmdb?path=movie/popular`);
         const json = await res.json();
         console.log(json.results);
-        dispatch(addNowPlayingMovies(json.results));
+        dispatch(addPopularMovies(json.results));
       }
       catch{
          console.error("Error fetching popular movies:", error);
