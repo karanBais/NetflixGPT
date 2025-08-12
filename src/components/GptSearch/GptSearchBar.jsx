@@ -9,22 +9,22 @@ const GptSearchBar = () => {
   const dispatch = useDispatch();
 
   const fetchMovieFromTMDB = async (movieName) => {
-    const url = `/api/tmdb?path=search/movie&query=${encodeURIComponent(
-      movieName
-    )}&include_adult=false&language=en-US&page=1`;
+  const url = `/api/tmdb?path=search/movie&query=${encodeURIComponent(movieName)}&include_adult=false&language=en-US&page=1`;
 
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      return data.results?.[0];
-    } catch (error) {
-      console.error(`Error fetching TMDB movie "${movieName}":`, error);
-      return null;
-    }
-  };
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    const data = await response.json();
+    return data.results?.[0] || null;
+  } catch (error) {
+    console.error(`Error fetching TMDB movie "${movieName}":`, error);
+    return null;
+  }
+};
 
   const handleGptSearch = async () => {
     const query = searchText.current.value.trim();

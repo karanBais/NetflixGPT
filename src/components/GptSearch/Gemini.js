@@ -6,7 +6,7 @@ const apiKey = process.env.REACT_APP_GEMINI_API_KEY || "AIzaSyA8nQx_47UI-TXcMWIa
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+model: "gemini-2.5-flash",
 });
 
 const generationConfig = {
