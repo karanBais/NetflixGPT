@@ -4,7 +4,7 @@ import useMovieTrailer from "../../Hooks/useMovieTrailer";
 import { IMG_API_URL } from "../../../Constants";
 
 const VideoBackground = ({ movieId }) => {
-   useMovieTrailer(movieId);
+  useMovieTrailer(movieId);
 
   const trailerVideo = useSelector((store) => store.movies?.addTrailerVideos);
   const movieDetails = useSelector((store) =>
@@ -17,16 +17,6 @@ const VideoBackground = ({ movieId }) => {
 
   const playerRef = useRef(null);
 
-  // Load YouTube API script
-  useEffect(() => {
-    if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.body.appendChild(tag);
-    }
-  }, []);
-
-  // Initialize YouTube player
   useEffect(() => {
     if (!trailerVideo?.key) return;
 
@@ -52,18 +42,22 @@ const VideoBackground = ({ movieId }) => {
       });
     };
 
-    if (window.YT && window.YT.Player) {
-      createPlayer();
-    } else {
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
       window.onYouTubeIframeAPIReady = createPlayer;
+    } else {
+      createPlayer();
     }
   }, [trailerVideo]);
+
   return (
-    <div className="absolute top-0 left-0 w-full h-screen overflow-hidden z-0">
+    <div className="relative w-full h-[70vh] overflow-hidden z-0">
       {trailerVideo?.key ? (
         <div
           id="trailer-player"
-          className="w-screen h-screen aspect-video  object-cover pointer-events-none"
+          className="absolute top-0 left-0 w-full h-full pointer-events-none"
         ></div>
       ) : backdropUrl ? (
         <img
