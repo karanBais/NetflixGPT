@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { IMG_API_URL, MOVIE_API_OPTION } from "../../../Constants";
 
@@ -11,9 +11,8 @@ const VideoBackground = ({ movieId }) => {
     : null;
 
   const [videoKey, setVideoKey] = useState(null);
-  const playerRef = useRef(null);
 
-  // 1. Fetch video data from TMDB dynamically
+  // Fetch video data from TMDB dynamically
   useEffect(() => {
     const fetchVideo = async () => {
       try {
@@ -43,48 +42,16 @@ const VideoBackground = ({ movieId }) => {
     }
   }, [movieId]);
 
-  // 2. Load YouTube API
-  useEffect(() => {
-    if (!videoKey) return;
-
-    const createPlayer = () => {
-      playerRef.current = new window.YT.Player("trailer-player", {
-        videoId: videoKey,
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          mute: 1,
-          loop: 1,
-          playlist: videoKey,
-          modestbranding: 1,
-          rel: 0,
-        },
-        events: {
-          onReady: (event) => {
-            event.target.mute();
-            event.target.playVideo();
-          },
-        },
-      });
-    };
-
-    if (!window.YT) {
-      const tag = document.createElement("script");
-      tag.src = "https://www.youtube.com/iframe_api";
-      document.body.appendChild(tag);
-      window.onYouTubeIframeAPIReady = createPlayer;
-    } else {
-      createPlayer();
-    }
-  }, [videoKey]);
-
   return (
-       <div className="absolute top-0 left-0 w-full h-screen overflow-hidden z-0">
+    <div className="absolute top-0 left-0 w-full h-screen overflow-hidden z-0">
       {videoKey ? (
-        <div
-          id="trailer-player"
-          className="w-screen h-screen aspect-video  object-cover pointer-events-none"
-        ></div>
+        <iframe
+          src={`https://www.youtube.com/embed/${videoKey}?autoplay=1&mute=1&loop=1&playlist=${videoKey}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`}
+          frameBorder="0"
+          allow="autoplay; encrypted-media; fullscreen"
+          allowFullScreen
+          className="w-screen h-screen aspect-video object-cover pointer-events-none scale-125" // Added scale-125 to ensure it fills the screen without letterboxing
+        ></iframe>
       ) : backdropUrl ? (
         <img
           src={backdropUrl}
