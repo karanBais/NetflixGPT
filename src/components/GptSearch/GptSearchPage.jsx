@@ -1,7 +1,12 @@
+// src/components/GptSearch/GptSearchPage.js (Updated)
+import React from 'react';
+import GptSearchBar from './GptSearchBar';
+import GptMovieSuggestion from './GptMovieSuggetion';
+import { useSelector } from "react-redux";
+
 const GptSearchPage = () => {
   const isLoading = useSelector((state) => state.gpt.isLoading);
   const gptMovies = useSelector((state) => state.gpt.gptMovies);
-
   return (
     <div className="relative min-h-screen bg-black text-white pb-24">
       <GptSearchBar />
