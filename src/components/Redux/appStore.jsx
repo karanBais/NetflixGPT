@@ -11,4 +11,4 @@ const appStore = configureStore({
     },
 })
 
-export default appStore;
+export default appStore;    
