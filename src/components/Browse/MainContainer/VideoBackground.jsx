@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { IMG_API_URL, MOVIE_API_OPTION } from "../../../Constants";
+import { IMG_API_URL } from "../../../Constants"; // Removed MOVIE_API_OPTION since we're using proxy
 import YouTube from "react-youtube";
 
 const VideoBackground = ({ movieId }) => {
@@ -13,14 +13,16 @@ const VideoBackground = ({ movieId }) => {
 
   const [videoKey, setVideoKey] = useState(null);
 
-  // Fetch video data from TMDB dynamically
+  // Fetch video data via proxy
   useEffect(() => {
     const fetchVideo = async () => {
       try {
         const res = await fetch(
-          `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
-          MOVIE_API_OPTION
+          `/api/tmdb?path=movie/${movieId}/videos&language=en-US`
         );
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
         const data = await res.json();
         if (!data.results || data.results.length === 0) return;
 
