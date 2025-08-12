@@ -52,9 +52,9 @@ const Login = () => {
       <div className="relative z-10 flex justify-center items-center h-full ">
         <form
           onSubmit={handelSubmit}
-          className="bg-black bg-opacity-80 text-white px-10 py-12 rounded-md w-full max-w-md"
+         className="bg-black bg-opacity-80 text-white px-4 py-8 sm:px-6 sm:py-10 md:px-10 md:py-12 rounded-md w-11/12 max-w-xs sm:max-w-sm md:max-w-md"
         >
-          <h1 className="text-3xl font-bold mb-6">
+         <h1 className="text-2xl sm:text-3xl font-bold mb-6">
             {signUp ? "Sign Up" : "Sign In"}
           </h1>
 
@@ -63,7 +63,7 @@ const Login = () => {
             ref={name}
               type="text"
               placeholder="Name"
-              className="w-full p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
+             className="w-full p-2.5 sm:p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
               required
             />
           )}
@@ -72,7 +72,7 @@ const Login = () => {
           ref={email}
             type="text"
             placeholder="Email or mobile number"
-            className="w-full p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
+             className="w-full p-2.5 sm:p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
             required
           />
 
@@ -80,11 +80,11 @@ const Login = () => {
           ref={password}
             type="password"
             placeholder="Password"
-            className="w-full p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
+            className="w-full p-2.5 sm:p-3 mb-4 rounded bg-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
             required
           />
 
-          <button className="w-full bg-red-600 hover:bg-red-700 p-3 rounded font-semibold mt-2 mb-4">
+           <button className="w-full bg-red-600 hover:bg-red-700 p-2.5 sm:p-3 rounded font-semibold mt-2 mb-4">
             {!signUp ? "Sign In" : "Sign Up"}
           </button>
 

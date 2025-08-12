@@ -22,7 +22,7 @@ const MovieList = ({ title, movies }) => {
       <div className="relative group">
         {/* Left Arrow */}
         <button
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black/60 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 z-10"
+          className="absolute left-0 top-1/2 -translate-x-1 sm:translate-x-0 transform -translate-y-1/2 bg-black/60 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 z-10"
           onClick={scrollLeft}
         >
           <ChevronLeft size={28} />
@@ -40,7 +40,7 @@ const MovieList = ({ title, movies }) => {
 
         {/* Right Arrow */}
         <button
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black/60 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 z-10"
+          className="absolute right-0 top-1/2 translate-x-1 sm:translate-x-0 transform -translate-y-1/2 bg-black/60 p-2 rounded-full text-white opacity-0 group-hover:opacity-100 z-10"
           onClick={scrollRight}
         >
           <ChevronRight size={28} />

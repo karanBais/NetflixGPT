@@ -44,19 +44,19 @@ const Header = () => {
   }
 
   return (
-    <div className="flex justify-between items-center w-full px-6 py-4 fixed top-0 z-50 bg-gradient-to-b from-black to-transparent">
-      <img className="w-45" src={NETFLIX_LOGO} alt="" />
+     <div className="flex justify-between items-center w-full px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 fixed top-0 z-50 bg-gradient-to-b from-black to-transparent">
+      <img className="w-28 sm:w-36 md:w-45" src={NETFLIX_LOGO} alt="" />
       {user && (
         <div>
-          <div className="flex">
+          <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
            <button
-              className=" text-white border-1-white px-2 py-1 cursor-pointer  hover:border-2 border-red-600 active:bg-red-700 rounded-lg mr-4"
+              className=" text-white border-1-white px-2 py-1 sm:px-2 sm:py-1 text-[10px] sm:text-xs md:text-sm cursor-pointer  hover:border-2 border-red-600 active:bg-red-700 rounded-lg mr-4"
               onClick={() => handelGptSearch()}
             >
               { showGptSearch ?  "Home Page" :"GPT Search"  }
             </button>
             <button
-              className="  text-white border-1-white px-2 py-1 cursor-pointer hover:border-2 border-red-600 active:bg-red-700 rounded-lg mr-4"
+              className="  text-white border-1-white px-2 py-1 sm:px-2 sm:py-1 text-[10px] sm:text-xs md:text-sm cursor-pointer hover:border-2 border-red-600 active:bg-red-700 rounded-lg mr-4"
               onClick={() => handelSingout()}
             >
               Sign Out

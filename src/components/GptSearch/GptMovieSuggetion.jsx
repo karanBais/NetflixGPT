@@ -21,7 +21,7 @@ const GptMovieSuggestion = () => {
             No Image
           </div>
         )}
-        <h3 className="mt-2 text-m font-bold text-center text-white-500">{movie.title}</h3>
+         <h3 className="mt-2 text-sm font-bold text-center text-white">{movie.title}</h3>
       </div>
     ))}
   </div>
