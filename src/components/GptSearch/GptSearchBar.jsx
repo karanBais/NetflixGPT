@@ -27,10 +27,20 @@ const GptSearchBar = () => {
 };
 
   const handleGptSearch = async () => {
-    const query = searchText.current.value.trim();
-    if (!query) return;
+   const query = searchText.current.value.trim();
+  if (!query) return;
 
-    dispatch(startGptSearch()); // Start loading and clear previous results
+  // Check if quota is likely exceeded (e.g., based on time or a manual flag)
+  const currentTime = new Date();
+  const resetTime = new Date(currentTime);
+  resetTime.setUTCHours(0, 0, 0, 0); // Midnight UTC
+  resetTime.setUTCDate(resetTime.getUTCDate() + 1); // Next day
+  if (currentTime > new Date("2025-08-12T15:39:00Z") && currentTime < resetTime) { // Adjust based on last known usage
+    alert("Quota exceeded. Please try again after 7:30 AM IST on August 13, 2025.");
+    return;
+  }
+
+  dispatch(startGptSearch())
 
     const gptQuery = `Act as a Movie Recommendation system and suggest 5 movies for: ${query}. Return only names, comma-separated.`; // Reduced to 5 for faster response
 
