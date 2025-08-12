@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import useMovieTrailer from "../../Hooks/useMovieTrailer";
 import { IMG_API_URL } from "../../../Constants";
@@ -7,31 +7,55 @@ const VideoBackground = ({ movieId }) => {
   useMovieTrailer(movieId); // Fetch trailer when component mounts
 
   const trailerVideo = useSelector((store) => store.movies?.addTrailerVideos);
-  const movieDetails = useSelector((store) => store.movies?.nowPlayingMovies?.find(m => m.id === movieId));
+  const movieDetails = useSelector((store) =>
+    store.movies?.nowPlayingMovies?.find((m) => m.id === movieId)
+  );
 
-  const backdropUrl = movieDetails?.backdrop_path 
+  const backdropUrl = movieDetails?.backdrop_path
     ? `${IMG_API_URL}${movieDetails.backdrop_path}`
     : null;
 
-    useEffect(() => {
-  if (window.YT && trailerVideo?.key) {
-    const player = new window.YT.Player("trailer-player", {
-      events: {
-        onReady: (event) => event.target.playVideo(),
-      },
-    });
-  }
-}, [trailerVideo]);
+  // Load the YouTube Iframe API once
+  useEffect(() => {
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
+    }
+  }, []);
+
+  // Create the player when API and trailerVideo are ready
+  useEffect(() => {
+    if (!trailerVideo?.key) return;
+
+    const onYouTubeReady = () => {
+      new window.YT.Player("trailer-player", {
+        events: {
+          onReady: (event) => {
+            event.target.mute();
+            event.target.playVideo();
+          },
+        },
+      });
+    };
+
+    if (window.YT && window.YT.Player) {
+      onYouTubeReady();
+    } else {
+      window.onYouTubeIframeAPIReady = onYouTubeReady;
+    }
+  }, [trailerVideo]);
 
   return (
     <div className="absolute top-0 left-0 w-full h-screen overflow-hidden z-0">
       {trailerVideo?.key ? (
         <iframe
+          id="trailer-player"
           className="w-screen aspect-video object-cover pointer-events-none"
-          src={`https://www.youtube.com/embed/${trailerVideo?.key}?mute=1&autoplay=1&controls=0&loop=1&playlist=${trailerVideo?.key}&enablejsapi=1`}
+          src={`https://www.youtube.com/embed/${trailerVideo?.key}?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerVideo?.key}`}
           title="YouTube video player"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
+          allow="autoplay; encrypted-media"
+          frameBorder="0"
         ></iframe>
       ) : backdropUrl ? (
         <img
@@ -40,7 +64,7 @@ const VideoBackground = ({ movieId }) => {
           className="w-full h-full object-cover"
         />
       ) : (
-        <div className="w-full h-full bg-black"></div> // pure black fallback
+        <div className="w-full h-full bg-black"></div>
       )}
 
       {/* Gradient overlay */}
