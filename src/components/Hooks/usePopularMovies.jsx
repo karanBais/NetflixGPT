@@ -7,15 +7,15 @@ const usePopularMovies = () => {
     const dispatch = useDispatch()
   
    const getPopulsarMovies = async () => {
-     try{
-         const res = await fetch(`/api/tmdb?path=movie/popular`);
+         try{
+          const res = await fetch(`/api/tmdb?path=movie/popular`);
         const json = await res.json();
         console.log(json.results);
-        dispatch(addPopularMovies(json.results));
-     }
-     catch{
-       console.error("Error fetching now playing movies:", error);
-     }
+        dispatch(addNowPlayingMovies(json.results));
+      }
+      catch{
+         console.log("Error fetching now playing movies:");
+      }
       }
       
       useEffect(() => {

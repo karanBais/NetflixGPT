@@ -7,14 +7,14 @@ const useNowPlayingMovies = () => {
     const dispatch = useDispatch()
   
    const getNowPlayingMovies = async () => {
-      try{
+       try{
           const res = await fetch(`/api/tmdb?path=movie/now_playing`);
         const json = await res.json();
         console.log(json.results);
         dispatch(addNowPlayingMovies(json.results));
       }
       catch{
-         console.error("Error fetching now playing movies:", error);
+         console.log("Error fetching now playing movies:");
       }
       }
       
