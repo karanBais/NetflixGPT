@@ -1,4 +1,3 @@
-// src/Redux/GptSlice.js (Updated)
 import { createSlice } from "@reduxjs/toolkit";
 
 const GptSlice = createSlice({
@@ -6,7 +5,6 @@ const GptSlice = createSlice({
   initialState: {
     showGptSearch: false,
     gptMovies: [], // store GPT movie results
-    isLoading: false, // Added for loading state
   },
   reducers: {
     toggleGptSearch: (state) => {
@@ -14,14 +12,9 @@ const GptSlice = createSlice({
     },
     setGptMovies: (state, action) => {
       state.gptMovies = action.payload;
-      state.isLoading = false; // Stop loading when movies are set
-    },
-    startGptSearch: (state) => {
-      state.isLoading = true; // Start loading
-      state.gptMovies = []; // Clear previous results
     },
   },
 });
 
-export const { toggleGptSearch, setGptMovies, startGptSearch } = GptSlice.actions;
+export const { toggleGptSearch, setGptMovies } = GptSlice.actions;
 export default GptSlice.reducer;

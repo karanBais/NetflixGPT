@@ -1,19 +1,18 @@
 // src/components/GptSearch/Gemini.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Use environment variable with fallback for development/testing
-const apiKey = process.env.REACT_APP_GEMINI_API_KEY || "AIzaSyA8nQx_47UI-TXcMWIazth1d7VlKIxw-2Y";
+const apiKey = "AIzaSyA8nQx_47UI-TXcMWIazth1d7VlKIxw-2Y"; // replace with yours
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-model: "gemini-2.5-flash",
+  model: "gemini-1.5-flash",
 });
 
 const generationConfig = {
-  temperature: 0.7, // Slightly lower for consistency
+  temperature: 1,
   topP: 0.95,
   topK: 40,
-  maxOutputTokens: 200, // Reduced for faster responses
+  maxOutputTokens: 8192,
   responseMimeType: "text/plain",
 };
 
@@ -23,13 +22,8 @@ async function run(prompt) {
     history: [],
   });
 
-  try {
-    const result = await chatSession.sendMessage(prompt);
-    return await result.response.text();
-  } catch (error) {
-    console.error("Gemini API error:", error);
-    throw error; // Re-throw to handle in GptSearchBar
-  }
+  const result = await chatSession.sendMessage(prompt);
+  return await result.response.text();
 }
 
 export default run;
