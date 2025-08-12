@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import useMovieTrailer from "../../Hooks/useMovieTrailer";
 import { IMG_API_URL } from "../../../Constants";
 
 const VideoBackground = ({ movieId }) => {
-  useMovieTrailer(movieId); // Fetch trailer when component mounts
+   useMovieTrailer(movieId);
 
   const trailerVideo = useSelector((store) => store.movies?.addTrailerVideos);
   const movieDetails = useSelector((store) =>
@@ -15,7 +15,9 @@ const VideoBackground = ({ movieId }) => {
     ? `${IMG_API_URL}${movieDetails.backdrop_path}`
     : null;
 
-  // Load the YouTube Iframe API once
+  const playerRef = useRef(null);
+
+  // Load YouTube API script
   useEffect(() => {
     if (!window.YT) {
       const tag = document.createElement("script");
@@ -24,12 +26,23 @@ const VideoBackground = ({ movieId }) => {
     }
   }, []);
 
-  // Create the player when API and trailerVideo are ready
+  // Initialize YouTube player
   useEffect(() => {
     if (!trailerVideo?.key) return;
 
-    const onYouTubeReady = () => {
-      new window.YT.Player("trailer-player", {
+    const createPlayer = () => {
+      playerRef.current = new window.YT.Player("trailer-player", {
+        videoId: trailerVideo.key,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          mute: 1,
+          loop: 1,
+          playlist: trailerVideo.key,
+          modestbranding: 1,
+          rel: 0,
+          showinfo: 0,
+        },
         events: {
           onReady: (event) => {
             event.target.mute();
@@ -40,23 +53,18 @@ const VideoBackground = ({ movieId }) => {
     };
 
     if (window.YT && window.YT.Player) {
-      onYouTubeReady();
+      createPlayer();
     } else {
-      window.onYouTubeIframeAPIReady = onYouTubeReady;
+      window.onYouTubeIframeAPIReady = createPlayer;
     }
   }, [trailerVideo]);
-
   return (
     <div className="absolute top-0 left-0 w-full h-screen overflow-hidden z-0">
       {trailerVideo?.key ? (
-        <iframe
+        <div
           id="trailer-player"
-          className="w-screen aspect-video object-cover pointer-events-none"
-          src={`https://www.youtube.com/embed/${trailerVideo?.key}?enablejsapi=1&autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerVideo?.key}`}
-          title="YouTube video player"
-          allow="autoplay; encrypted-media"
-          frameBorder="0"
-        ></iframe>
+          className="w-screen h-screen aspect-video  object-cover pointer-events-none"
+        ></div>
       ) : backdropUrl ? (
         <img
           src={backdropUrl}
