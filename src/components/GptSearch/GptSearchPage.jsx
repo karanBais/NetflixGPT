@@ -11,4 +11,4 @@ const GptSearchPage = () => {
   )
 }
 
-export default GptSearchPage
+export default GptSearchPage;

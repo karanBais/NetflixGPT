@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import run from "./Gemini";
 import { MOVIE_API_OPTION } from "../../Constants";
 import { useDispatch } from "react-redux";

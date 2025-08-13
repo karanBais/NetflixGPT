@@ -1,4 +1,3 @@
-// src/components/GptSearch/Gemini.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const apiKey = "AIzaSyA8nQx_47UI-TXcMWIazth1d7VlKIxw-2Y"; // replace with yours
@@ -23,7 +22,7 @@ async function run(prompt) {
   });
 
   const result = await chatSession.sendMessage(prompt);
-  return await result.response.text();
+  return result.response.text();
 }
 
 export default run;
