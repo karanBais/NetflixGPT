@@ -2,7 +2,7 @@ import { useRef } from "react";
 import run from "./Gemini";
 import { MOVIE_API_OPTION } from "../../Constants";
 import { useDispatch } from "react-redux";
-import { setGptMovies } from "../Redux/GptSlice";
+import { setGptMovies, startGptSearch } from "../Redux/GptSlice";
 
 const GptSearchBar = () => {
   const searchText = useRef(null);
@@ -22,6 +22,8 @@ const GptSearchBar = () => {
     const query = searchText.current.value.trim();
     if (!query) return;
 
+    dispatch(startGptSearch()); // Start loading
+
     const gptQuery = `Act as a Movie Recommendation system and suggest 10 movies for: ${query}. Return only names, comma-separated.`;
 
     try {
@@ -36,6 +38,7 @@ const GptSearchBar = () => {
       dispatch(setGptMovies(filteredMovies));
     } catch (error) {
       console.error("Error fetching GPT movies:", error);
+      dispatch(setGptMovies([])); // Reset on error
     }
   };
 
